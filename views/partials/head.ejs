@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title ? title + ' — ' + site.name : site.name + ' — ' + site.tagline %></title>
+<meta name="description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : site.description %>">
+<link rel="canonical" href="<%= siteUrl + currentPath %>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= site.name %>">
+<meta property="og:title" content="<%= title || site.name %>">
+<meta property="og:description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : site.description %>">
+<meta property="og:url" content="<%= siteUrl + currentPath %>">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
+<a class="skip-link" href="#main">Skip to content</a>

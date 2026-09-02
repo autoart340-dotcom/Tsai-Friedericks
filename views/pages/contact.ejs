@@ -1,0 +1,102 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="main">
+  <section class="wrap page-head">
+    <h1>Contact</h1>
+    <p class="lead">Tell us what you are making. Every enquiry gets a reply.</p>
+  </section>
+
+  <section class="wrap section contact-layout">
+    <form class="form" method="post" action="/contact" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="form_loaded_at" value="<%= formLoadedAt %>">
+      <p class="hp" aria-hidden="true">
+        <label for="website">Leave this field empty</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" value="">
+      </p>
+
+      <% if (formError) { %>
+        <p class="alert alert-error" role="alert"><%= formError %></p>
+      <% } %>
+
+      <div class="field">
+        <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="name" name="name" required autocomplete="name" maxlength="120"
+               value="<%= values.name || '' %>"<%= errors.name ? ' aria-invalid="true" aria-describedby="err-name"' : '' %>>
+        <% if (errors.name) { %><span class="field-error" id="err-name"><%= errors.name %></span><% } %>
+      </div>
+
+      <div class="field">
+        <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email" maxlength="200"
+               value="<%= values.email || '' %>"<%= errors.email ? ' aria-invalid="true" aria-describedby="err-email"' : '' %>>
+        <% if (errors.email) { %><span class="field-error" id="err-email"><%= errors.email %></span><% } %>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" maxlength="40" value="<%= values.phone || '' %>">
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" autocomplete="organization" maxlength="160" value="<%= values.company || '' %>">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="project_type">Project type</label>
+          <select id="project_type" name="project_type">
+            <option value="">Select…</option>
+            <% projectTypes.forEach(function (option) { %>
+              <option value="<%= option %>"<%= values.project_type === option ? ' selected' : '' %>><%= option %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="field">
+          <label for="budget_range">Budget</label>
+          <select id="budget_range" name="budget_range">
+            <option value="">Select…</option>
+            <% budgetRanges.forEach(function (option) { %>
+              <option value="<%= option %>"<%= values.budget_range === option ? ' selected' : '' %>><%= option %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="field">
+          <label for="timeline">Timeline</label>
+          <select id="timeline" name="timeline">
+            <option value="">Select…</option>
+            <% timelines.forEach(function (option) { %>
+              <option value="<%= option %>"<%= values.timeline === option ? ' selected' : '' %>><%= option %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="message">About the project <span class="req" aria-hidden="true">*</span></label>
+        <textarea id="message" name="message" rows="7" required maxlength="5000"
+                  <%= errors.message ? 'aria-invalid="true" aria-describedby="err-message"' : '' %>><%= values.message || '' %></textarea>
+        <% if (errors.message) { %><span class="field-error" id="err-message"><%= errors.message %></span><% } %>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Send enquiry</button>
+      <p class="muted small">We use your details only to reply to this enquiry.</p>
+    </form>
+
+    <aside class="contact-aside">
+      <h2>Direct</h2>
+      <p><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a></p>
+      <p><a href="tel:<%= site.contact.phone.replace(/[^+0-9]/g, '') %>"><%= site.contact.phone %></a></p>
+      <p class="muted"><%= site.contact.address %></p>
+      <h2>What helps</h2>
+      <ul>
+        <li>Roughly what you want to make</li>
+        <li>When you need it delivered</li>
+        <li>A budget range, even a loose one</li>
+      </ul>
+    </aside>
+  </section>
+</main>
+<%- include('../partials/footer') %>

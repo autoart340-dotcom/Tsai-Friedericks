@@ -1,0 +1,15 @@
+<ul class="project-grid plain">
+  <% projects.forEach(function (project) { %>
+    <li class="project-card">
+      <a href="/work/<%= project.slug %>">
+        <span class="project-thumb">
+          <img src="<%= project.cover %>" alt="" loading="lazy" width="800" height="450">
+        </span>
+        <span class="project-meta">
+          <span class="project-title"><%= project.title %></span>
+          <span class="muted"><%= project.client %> · <%= project.category %> · <%= project.year %></span>
+        </span>
+      </a>
+    </li>
+  <% }); %>
+</ul>

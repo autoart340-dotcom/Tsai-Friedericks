@@ -1,0 +1,24 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="main">
+  <section class="wrap page-head">
+    <h1>Work</h1>
+    <p class="lead">Commercials, music videos and documentary. A selection, not the archive.</p>
+  </section>
+  <section class="wrap section">
+    <% if (categories.length > 1) { %>
+      <nav class="filters" aria-label="Filter work by category">
+        <a href="/work"<%= !activeCategory ? ' aria-current="true"' : '' %>>All</a>
+        <% categories.forEach(function (category) { %>
+          <a href="/work?category=<%= encodeURIComponent(category) %>"<%= activeCategory === category ? ' aria-current="true"' : '' %>><%= category %></a>
+        <% }); %>
+      </nav>
+    <% } %>
+    <% if (projects.length) { %>
+      <%- include('../partials/project-grid', { projects: projects }) %>
+    <% } else { %>
+      <p class="empty">No projects in that category yet.</p>
+    <% } %>
+  </section>
+</main>
+<%- include('../partials/footer') %>

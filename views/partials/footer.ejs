@@ -1,0 +1,28 @@
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-brand"><%= site.name %></p>
+      <p class="muted"><%= site.tagline %></p>
+    </div>
+    <div>
+      <p class="footer-heading">Contact</p>
+      <p><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a></p>
+      <p><a href="tel:<%= site.contact.phone.replace(/[^+0-9]/g, '') %>"><%= site.contact.phone %></a></p>
+      <p class="muted"><%= site.contact.address %></p>
+    </div>
+    <div>
+      <p class="footer-heading">Elsewhere</p>
+      <ul class="plain">
+        <% site.social.forEach(function (link) { %>
+          <li><a href="<%= link.url %>" rel="noopener noreferrer"><%= link.label %></a></li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-base">
+    <p class="muted">&copy; <%= new Date().getFullYear() %> <%= site.name %>. All rights reserved.</p>
+  </div>
+</footer>
+<script src="/js/site.js" defer></script>
+</body>
+</html>
