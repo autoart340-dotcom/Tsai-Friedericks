@@ -14,6 +14,16 @@ If not, the task is not finished.
 
 ---
 
+## Companion protocols
+
+The following protocol is in effect alongside this framework and is imported automatically:
+
+@TOKEN_EFFICIENCY.md
+
+`TOKEN_EFFICIENCY.md` governs *how much* is communicated — agent report formats, context passing, escalation level, and output budgets. This file governs *what to do and why*. Where the two overlap on the mechanics of delegation, `TOKEN_EFFICIENCY.md` is authoritative.
+
+---
+
 ## 1. Understand before acting
 
 For every meaningful request, determine:

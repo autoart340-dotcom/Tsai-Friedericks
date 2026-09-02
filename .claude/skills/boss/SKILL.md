@@ -1,11 +1,16 @@
 ---
 name: boss
-description: Run the full Boss Agent orchestration loop on a substantial task — build an outcome spec, delegate to specialists with explicit briefs, red-team the result, and verify against quality gates before delivering. Use when a task is large or high-stakes enough to warrant planning and independent challenge rather than direct execution, or when the user invokes /boss by name. Do not use for straightforward tasks that should just be done.
+description: Run the full Boss Agent orchestration loop on a substantial task — build an outcome spec, delegate to specialists with compact briefs, red-team the result, and verify against quality gates before delivering. Use when a task is large or high-stakes enough to warrant planning and independent challenge rather than direct execution, or when the user invokes /boss by name. Do not use for straightforward tasks that should just be done.
 ---
 
 # Boss orchestration loop
 
-The *principles* governing this repo live in `CLAUDE.md` and are always in effect. This skill is the **procedure** only — the mechanics of running the loop. Do not restate the principles here; read `CLAUDE.md` for them.
+This skill is the **procedure** only.
+
+- Principles — `CLAUDE.md`
+- Communication limits, report formats, escalation levels, output budgets — `TOKEN_EFFICIENCY.md`
+
+Neither is restated here. Read them for those.
 
 ## When to run this
 
@@ -16,74 +21,68 @@ Run the full loop when at least two are true:
 - It spans enough surface area that one pass will miss something
 - The user's stated wording and probable objective may diverge
 
-If none apply, do the task directly. Invoking this skill on a small task is the failure mode described in `CLAUDE.md` §12.
+If none apply, solve it directly at escalation level 1. Invoking this skill on a small task is the failure mode described in `CLAUDE.md` §12.
 
 ## Step 1 — Outcome spec
 
 Before delegating anything, write a short internal spec (not shown to the user unless asked):
 
 ```
-OBJECTIVE:      what the user actually wants to be true when this is done
-NOT IN SCOPE:   what they explicitly do not want, or plainly do not care about
-CONSTRAINTS:    hard limits — technical, stylistic, time, compatibility
-SUCCESS:        the observable test that decides whether this succeeded
-RISKS:          the assumptions that would be expensive to get wrong
+OBJECTIVE:    what the user actually wants to be true when this is done
+NOT IN SCOPE: what they explicitly do not want, or plainly do not care about
+CONSTRAINTS:  hard limits — technical, stylistic, time, compatibility
+SUCCESS:      the observable test that decides whether this succeeded
+RISKS:        the assumptions that would be expensive to get wrong
 ```
 
 If `OBJECTIVE` and `SUCCESS` cannot be written without guessing between materially different outcomes, ask one concise clarification question before continuing.
 
+This spec is also the compression artifact required by `TOKEN_EFFICIENCY.md` §12 — pass slices of it to agents rather than conversation history.
+
 ## Step 2 — Decide the roster
 
-Pick the smallest set of specialists that can reliably produce an excellent result. Justify each one in a sentence to yourself. If you cannot say what a given agent adds that you would otherwise miss, do not create it.
-
-Typical shapes:
-
-| Task shape | Roster |
-| --- | --- |
-| Unknown territory | Researcher → Builder → Critic |
-| Known problem, real stakes | Builder → Critic |
-| Contested design decision | two independent Builders → you adjudicate |
-| Correctness-critical change | Builder → Red Team → QA |
+Pick the escalation level per `TOKEN_EFFICIENCY.md` §6, and the team per §4. Justify each agent in a sentence to yourself: if you cannot say what it adds that you would otherwise miss, do not create it.
 
 Run independent agents in parallel in a single message. Run dependent ones in sequence.
 
 ## Step 3 — Brief each agent
 
-Every brief includes all six fields. A brief missing any of them is not ready to send.
+Use the compact brief from `TOKEN_EFFICIENCY.md` §7:
 
 ```
-ROLE:             the specialist identity and its posture
-OBJECTIVE:        the single thing this agent is to determine or produce
-CONTEXT:          the facts it needs — it starts cold and knows nothing
-CONSTRAINTS:      what it must not do, change, or assume
-EXPECTED OUTPUT:  the exact shape of the deliverable
-SUCCESS CRITERIA: how you will judge whether it did the job
+ROLE:
+OBJECTIVE:
+CONTEXT:
+CONSTRAINTS:
+OUTPUT:
 ```
 
-Never hand an agent a bare restatement of the user's request. Hand it your spec.
+`CONTEXT` gets the relevant slice of the Step 1 spec — the agent starts cold, but does not need the conversation. `OUTPUT` states the deliverable's exact shape; when the bar for acceptance is not obvious from that shape, state it there in one line. Never hand an agent a bare restatement of the user's request.
 
 ## Step 4 — Independent challenge
 
-For decisions that are expensive to reverse, do not let the reviewing agent inherit the building agent's assumptions. Brief the challenger from the *spec*, not from the solution, and ask it to reach its own conclusion before seeing the proposed one.
+For decisions that are expensive to reverse, do not let the reviewing agent inherit the building agent's assumptions. Brief the challenger from the *spec*, not from the solution, and have it reach its own conclusion before seeing the proposed one.
 
-When agents disagree, diagnose the disagreement. Do not count votes. The usual causes:
+When agents disagree, diagnose the disagreement — do not count votes. Usual causes:
 
 - They were given different context (your fault — fix the brief)
 - They optimized different objectives (your fault — the spec was ambiguous)
 - One of them is simply wrong (verify against primary sources, then discard it)
 
+Skip this step below escalation level 4 unless the decision genuinely warrants it.
+
 ## Step 5 — Critique
 
-The Critic's brief must permit rejection. Give it the spec and the work, and ask for a verdict of **ACCEPTED** or **REJECTED** with specific, addressable findings — not a general impression.
+Brief the Critic with the spec and the work, and require the verdict format in `TOKEN_EFFICIENCY.md` §11. The brief must permit `FAIL`.
 
-Discard critic findings that are stylistic noise. Act on findings that touch the spec's `SUCCESS` or `RISKS` lines.
+Act on findings that touch the spec's `SUCCESS` or `RISKS` lines. Discard stylistic noise.
 
 ## Step 6 — Verify
 
 Run the quality gates in `CLAUDE.md` §11. Verification means checking the actual artifact — run the tests, read the diff, open the output — not asking an agent whether it believes its own work is good.
 
-If a critical gate fails, revise and re-verify. Stop iterating when the important requirements are met and further passes are unlikely to change the outcome.
+If a critical gate fails, revise and re-verify. Stop per `TOKEN_EFFICIENCY.md` §13.
 
 ## Step 7 — Deliver
 
-Report the result, the decisions that shaped it, the assumptions you made, and the limitations that remain. Keep the internal agent traffic out of the response unless asked for it.
+Report the result, the decisions that shaped it, the assumptions made, and the limitations that remain. Keep internal agent traffic out of the response unless asked for it.
