@@ -1,0 +1,33 @@
+{
+  "name": "tsai-friedericks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website and enquiry management backend for Tsai-Friedericks, a film and video production company.",
+  "type": "commonjs",
+  "engines": { "node": ">=20.0.0" },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/*.test.js",
+    "create-admin": "node scripts/create-admin.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "compression": "^1.8.1",
+    "cookie-session": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "morgan": "^1.12.0",
+    "zod": "^4.5.4"
+  },
+  "optionalDependencies": {
+    "nodemailer": "^9.1.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2"
+  }
+}

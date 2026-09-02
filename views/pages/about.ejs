@@ -1,0 +1,20 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="main">
+  <section class="wrap page-head">
+    <h1>About</h1>
+    <p class="lead"><%= site.about.lead %></p>
+  </section>
+  <section class="wrap section prose">
+    <% site.about.body.forEach(function (paragraph) { %><p><%= paragraph %></p><% }); %>
+  </section>
+  <section class="wrap section">
+    <h2>Who you work with</h2>
+    <ul class="team plain">
+      <% site.about.team.forEach(function (member) { %>
+        <li><span class="team-name"><%= member.name %></span><span class="muted"><%= member.role %></span></li>
+      <% }); %>
+    </ul>
+  </section>
+</main>
+<%- include('../partials/footer') %>

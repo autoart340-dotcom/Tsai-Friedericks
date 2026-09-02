@@ -1,0 +1,21 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/">
+      <span class="brand-name"><%= site.name %></span>
+      <span class="brand-tag"><%= site.tagline %></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Menu</span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        <% site.nav.forEach(function (item) { %>
+          <li>
+            <a href="<%= item.href %>"<%= currentPath.startsWith(item.href) ? ' aria-current="page"' : '' %>><%= item.label %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </nav>
+  </div>
+</header>

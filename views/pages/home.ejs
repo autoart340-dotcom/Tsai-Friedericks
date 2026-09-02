@@ -1,0 +1,47 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="hero-title"><%= site.home.heroTitle %></h1>
+      <p class="hero-sub"><%= site.home.heroSubtitle %></p>
+      <p class="hero-actions">
+        <a class="btn btn-primary" href="/contact">Start a project</a>
+        <a class="btn btn-ghost" href="/work">See the work</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="embed">
+      <iframe src="<%= site.home.reelEmbed %>" title="<%= site.name %> showreel"
+              allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <p class="lead"><%= site.home.intro %></p>
+    <ul class="stats plain">
+      <% site.home.stats.forEach(function (stat) { %>
+        <li><span class="stat-value"><%= stat.value %></span><span class="stat-label"><%= stat.label %></span></li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <a class="link-more" href="/work">All work</a>
+    </div>
+    <%- include('../partials/project-grid', { projects: featured }) %>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Have something in mind?</h2>
+      <p>Tell us what you are making and roughly when. We answer every enquiry.</p>
+      <a class="btn btn-primary" href="/contact">Get in touch</a>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

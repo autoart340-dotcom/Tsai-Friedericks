@@ -1,0 +1,22 @@
+<% if (!inquiries.length) { %>
+  <p class="empty">No enquiries yet.</p>
+<% } else { %>
+<div class="table-scroll">
+  <table class="table">
+    <thead>
+      <tr><th>Received</th><th>Name</th><th>Project</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr>
+    </thead>
+    <tbody>
+      <% inquiries.forEach(function (row) { %>
+        <tr>
+          <td class="nowrap"><%= row.created_at %></td>
+          <td><strong><%= row.name %></strong><br><span class="muted"><%= row.email %></span></td>
+          <td><%= row.project_type || '—' %><br><span class="muted"><%= row.budget_range || '' %></span></td>
+          <td><span class="pill pill-<%= row.status %>"><%= row.status %></span></td>
+          <td class="nowrap"><a class="link-more" href="/admin/inquiries/<%= row.id %>">Open</a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } %>

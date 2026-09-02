@@ -1,0 +1,34 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="main">
+  <article>
+    <section class="wrap page-head">
+      <p class="eyebrow"><%= project.category %> · <%= project.year %></p>
+      <h1><%= project.title %></h1>
+      <p class="lead"><%= project.summary %></p>
+    </section>
+
+    <section class="wrap section">
+      <div class="embed">
+        <iframe src="<%= project.embed %>" title="<%= project.title %>"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <section class="wrap section project-detail">
+      <div class="project-body"><p><%= project.body %></p></div>
+      <dl class="project-facts">
+        <dt>Client</dt><dd><%= project.client %></dd>
+        <dt>Category</dt><dd><%= project.category %></dd>
+        <dt>Year</dt><dd><%= project.year %></dd>
+        <dt>Our role</dt><dd><%= project.role %></dd>
+      </dl>
+    </section>
+
+    <nav class="wrap section project-nav" aria-label="More work">
+      <% if (previous) { %><a class="link-more" href="/work/<%= previous.slug %>">&larr; <%= previous.title %></a><% } else { %><span></span><% } %>
+      <% if (next) { %><a class="link-more" href="/work/<%= next.slug %>"><%= next.title %> &rarr;</a><% } %>
+    </nav>
+  </article>
+</main>
+<%- include('../partials/footer') %>

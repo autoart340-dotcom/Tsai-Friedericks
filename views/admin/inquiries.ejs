@@ -1,0 +1,33 @@
+<%- include('_head') %>
+<main class="wrap admin-main">
+  <div class="section-head">
+    <h1>Enquiries</h1>
+    <a class="btn btn-small btn-ghost" href="/admin/inquiries/export.csv">Export CSV</a>
+  </div>
+
+  <form class="filters-form" method="get" action="/admin/inquiries">
+    <label class="visually-hidden" for="q">Search</label>
+    <input type="search" id="q" name="q" placeholder="Search name, email, message…" value="<%= filters.q %>">
+    <label class="visually-hidden" for="status">Status</label>
+    <select id="status" name="status">
+      <option value="">All statuses</option>
+      <% ['new', 'read', 'replied', 'archived'].forEach(function (option) { %>
+        <option value="<%= option %>"<%= filters.status === option ? ' selected' : '' %>><%= option %></option>
+      <% }); %>
+    </select>
+    <button class="btn btn-small btn-primary" type="submit">Filter</button>
+    <% if (filters.q || filters.status) { %><a class="link-more" href="/admin/inquiries">Clear</a><% } %>
+  </form>
+
+  <p class="muted small"><%= total %> result<%= total === 1 ? '' : 's' %></p>
+  <%- include('_table', { inquiries: inquiries }) %>
+
+  <% if (totalPages > 1) { %>
+    <nav class="pagination" aria-label="Pagination">
+      <% for (let p = 1; p <= totalPages; p++) { %>
+        <a href="<%= buildPageUrl(p) %>"<%= p === page ? ' aria-current="page"' : '' %>><%= p %></a>
+      <% } %>
+    </nav>
+  <% } %>
+</main>
+<%- include('_foot') %>
