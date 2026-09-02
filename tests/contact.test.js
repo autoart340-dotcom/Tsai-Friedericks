@@ -91,3 +91,12 @@ test('a missing CSRF token is refused', async () => {
   assert.equal(res.status, 403);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM inquiries').get().n, 0);
 });
+
+test('a multi-byte token of equal character length is refused, not crashed', async () => {
+  resetDb();
+  const { agent } = await formSession();
+
+  const res = await agent.post('/contact').type('form').send(validPayload('\u00e9'.repeat(64)));
+  assert.equal(res.status, 403, 'must fail closed with 403, never a 500');
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM inquiries').get().n, 0);
+});

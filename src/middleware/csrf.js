@@ -20,11 +20,17 @@ function verifyCsrf(req, res, next) {
   const expected = req.session && req.session.csrf;
   const supplied = req.body && req.body._csrf;
 
+  // Compare byte lengths, not string lengths: timingSafeEqual throws on a
+  // length mismatch, and a multi-byte token would pass a character-count
+  // check while producing a longer buffer.
+  const expectedBuffer = typeof expected === 'string' ? Buffer.from(expected) : null;
+  const suppliedBuffer = typeof supplied === 'string' ? Buffer.from(supplied) : null;
+
   const ok =
-    expected &&
-    supplied &&
-    expected.length === supplied.length &&
-    crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(supplied));
+    expectedBuffer &&
+    suppliedBuffer &&
+    expectedBuffer.length === suppliedBuffer.length &&
+    crypto.timingSafeEqual(expectedBuffer, suppliedBuffer);
 
   if (!ok) {
     const error = new Error('Your session expired. Please reload the page and try again.');
