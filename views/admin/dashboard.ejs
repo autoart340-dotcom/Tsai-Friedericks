@@ -1,0 +1,24 @@
+<%- include('_head') %>
+<main class="wrap admin-main">
+  <h1>Dashboard</h1>
+  <ul class="stat-cards plain">
+    <li class="card"><span class="stat-value"><%= counts.new %></span><span class="stat-label">New</span></li>
+    <li class="card"><span class="stat-value"><%= counts.read %></span><span class="stat-label">Read</span></li>
+    <li class="card"><span class="stat-value"><%= counts.replied %></span><span class="stat-label">Replied</span></li>
+    <li class="card"><span class="stat-value"><%= counts.total %></span><span class="stat-label">Total</span></li>
+  </ul>
+
+  <% if (!mailerConfigured) { %>
+    <p class="alert alert-info">
+      Email alerts are off — no SMTP settings are configured. Enquiries are still saved here,
+      so nothing is lost; you just will not get a notification.
+    </p>
+  <% } %>
+
+  <div class="section-head">
+    <h2>Latest enquiries</h2>
+    <a class="link-more" href="/admin/inquiries">All enquiries</a>
+  </div>
+  <%- include('_table', { inquiries: recent }) %>
+</main>
+<%- include('_foot') %>

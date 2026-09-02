@@ -1,0 +1,50 @@
+<%- include('_head') %>
+<main class="wrap admin-main narrow">
+  <p><a class="link-more" href="/admin/inquiries">&larr; All enquiries</a></p>
+  <div class="section-head">
+    <h1><%= inquiry.name %></h1>
+    <span class="pill pill-<%= inquiry.status %>"><%= inquiry.status %></span>
+  </div>
+
+  <dl class="facts">
+    <dt>Email</dt><dd><a href="mailto:<%= inquiry.email %>"><%= inquiry.email %></a></dd>
+    <dt>Phone</dt><dd><%= inquiry.phone || '—' %></dd>
+    <dt>Company</dt><dd><%= inquiry.company || '—' %></dd>
+    <dt>Project type</dt><dd><%= inquiry.project_type || '—' %></dd>
+    <dt>Budget</dt><dd><%= inquiry.budget_range || '—' %></dd>
+    <dt>Timeline</dt><dd><%= inquiry.timeline || '—' %></dd>
+    <dt>Received</dt><dd><%= inquiry.created_at %></dd>
+    <dt>Sent from</dt><dd><%= inquiry.source_page || '—' %></dd>
+  </dl>
+
+  <h2>Message</h2>
+  <blockquote class="message"><%= inquiry.message %></blockquote>
+
+  <form class="card" method="post" action="/admin/inquiries/<%= inquiry.id %>/status">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="status">Status</label>
+    <div class="inline-controls">
+      <select id="status" name="status">
+        <% ['new', 'read', 'replied', 'archived'].forEach(function (option) { %>
+          <option value="<%= option %>"<%= inquiry.status === option ? ' selected' : '' %>><%= option %></option>
+        <% }); %>
+      </select>
+      <button class="btn btn-small btn-primary" type="submit">Update</button>
+    </div>
+  </form>
+
+  <form class="card" method="post" action="/admin/inquiries/<%= inquiry.id %>/notes">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="admin_notes">Internal notes</label>
+    <textarea id="admin_notes" name="admin_notes" rows="5"><%= inquiry.admin_notes %></textarea>
+    <button class="btn btn-small btn-primary" type="submit">Save notes</button>
+  </form>
+
+  <form class="card danger" method="post" action="/admin/inquiries/<%= inquiry.id %>/delete"
+        data-confirm="Permanently delete this enquiry? This cannot be undone.">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <p class="muted small">Deleting removes this enquiry permanently.</p>
+    <button class="btn btn-small btn-danger" type="submit">Delete enquiry</button>
+  </form>
+</main>
+<%- include('_foot') %>
